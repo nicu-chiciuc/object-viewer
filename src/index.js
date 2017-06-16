@@ -9,7 +9,8 @@ var rootObject = {
   something: {
     nothing: true,
     everything: false
-  }
+  },
+  someFunction: () => console.log("yes")
 };
 
 rootObject.something.repeat = rootObject;

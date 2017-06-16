@@ -20,6 +20,10 @@
   transform: rotate(-90deg);
 }
 
+.arrow-no-children {
+  visibility: hidden;
+}
+
 .property-name {
   color: blue;
   font-size: 1.2em;
@@ -33,4 +37,8 @@
 .property-info {
   font-family: "Courier New", Courier, monospace;
   color: red;
+}
+
+p {
+  font-family: "Courier New", Courier, monospace;
 }

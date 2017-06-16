@@ -10,6 +10,8 @@ export default class App extends Component {
       rootObject: this.props.rootObject,
       extended: this.props.extended
     };
+
+    window.setRootObject = this.setRootObject.bind(this);
   }
 
   handleClicks = comp => {
@@ -27,10 +29,16 @@ export default class App extends Component {
 
   resetLevel = () => {
     const maxLevel = parseInt(this.resetDepth.value);
+
+    if (isNaN(maxLevel)) {
+      console.error("Value given is not a number!");
+      return;
+    }
+
     const root = this.state.rootObject;
     let newExtended = [];
 
-    recursiveReset("", 0, "rootObject", root);
+    recursiveReset("", 1, "rootObject", root);
 
     this.setState({ extended: newExtended });
 
@@ -38,8 +46,6 @@ export default class App extends Component {
       if (levelNow > maxLevel) return;
       const newFullPath = fullPath.length ? fullPath + "." + name : name;
       newExtended.push(newFullPath);
-
-      const type = typeof value;
 
       if (typeof value === "object") {
         Object.keys(value).forEach(key => {
@@ -49,9 +55,26 @@ export default class App extends Component {
     }
   };
 
+  setRootObject(newObject) {
+    this.setState({
+      rootObject: newObject,
+      extended: []
+    });
+  }
+
   render() {
     return (
       <div>
+        <p>
+          The components supports circular objects.
+        </p>
+        <p>
+          The global function{" "}
+          <span style={{ fontWeight: "bold" }}>setRootObject()</span> can be
+          given a
+          variable and it will update the state of the components.
+        </p>
+
         <div>
           <input
             ref={node => (this.resetDepth = node)}

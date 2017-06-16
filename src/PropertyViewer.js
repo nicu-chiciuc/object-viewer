@@ -4,46 +4,61 @@ import PropTypes from "prop-types";
 class PropertyViewer extends Component {
   handleClick = () => {};
 
+  getOtherInfo() {
+    const value = this.props.value;
+    if (typeof value === "object")
+      return Object.keys(value).length + " children";
+    else if (typeof value === "boolean") return value ? "true" : "false";
+    else return value;
+  }
+
+  getChildren() {
+    const value = this.props.value;
+    if (typeof value === "object") return Object.keys(value);
+    else return [];
+  }
+
+  getMargin() {
+    return this.props.indent * 30 + "px";
+  }
+
   render() {
     const value = this.props.value;
-    const type = typeof value;
-    let keys = Object.keys(value);
-    if (typeof value === "string") keys = [];
-
-    let otherInfo;
-
-    if (type === "object" || type === "array")
-      otherInfo = keys.length + " children";
-    else otherInfo = value;
-
-    console.log(keys);
 
     const shouldExtend = this.props.global.extended.includes(
       this.props.fullPath
     );
 
-    const marginLeft = this.props.indent * 30 + "px";
+    const children = this.getChildren();
+
+    const canExtend = children.length > 0;
 
     return (
       <div>
-        <div style={{ marginLeft }}>
+        <div style={{ marginLeft: this.getMargin() }}>
           <div
             onClick={() => this.props.callClick(this)}
-            className={shouldExtend ? "arrow" : "arrow arrow-collapsed"}
+            className={
+              canExtend
+                ? shouldExtend ? "arrow" : "arrow arrow-collapsed"
+                : "arrow arrow-no-children"
+            }
           />
 
           <div style={{ display: "inline-block" }}>
             <span className={"property-name"}> {this.props.name}  </span>
-            <span className={"property-type"}> {type}  </span>
+            <span className={"property-type"}>
+              {" "}{typeof value}
+            </span>
             <span className={"property-info"}>
-              {otherInfo}
+              {" "}{this.getOtherInfo()}
             </span>
 
           </div>
         </div>
 
         {shouldExtend
-          ? keys.map(key =>
+          ? this.getChildren().map(key =>
               <PropertyViewer
                 global={this.props.global}
                 fullPath={this.props.fullPath + "." + key}
