@@ -1,0 +1,30 @@
+{
+  "name": "object-viewer",
+  "version": "1.0.0",
+  "description": "A simple object viewer",
+  "main": "index.js",
+  "author": "Chiciuc Nicusor",
+  "repository": "https://github.com/nicu-chiciuc/object-viewer",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.0.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-plugin-react": "^7.0.1",
+    "jquery": "^3.2.1",
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "dependencies": {
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  }
+}
