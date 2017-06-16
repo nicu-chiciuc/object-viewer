@@ -1,33 +1,65 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-function NumberViewer(props) {
-  const marginLeft = props.indent * 30 + "px";
+class PropertyViewer extends Component {
+  handleClick = () => {};
 
-  return <div style={{ marginLeft }}> {props.name} </div>;
-}
-
-export default class PropertyViewer extends Component {
   render() {
     const value = this.props.value;
+    const type = typeof value;
     let keys = Object.keys(value);
     if (typeof value === "string") keys = [];
 
+    let otherInfo;
+
+    if (type === "object" || type === "array")
+      otherInfo = keys.length + " children";
+    else otherInfo = value;
+
     console.log(keys);
 
-    if (this.props.indent > 10) return <div>overflow</div>;
-    else
-      return (
-        <div>
-          <NumberViewer name={this.props.name} indent={this.props.indent} />
-          {keys.map(key =>
-            <PropertyViewer
-              key={key}
-              name={key}
-              value={value[key]}
-              indent={this.props.indent + 1}
-            />
-          )}
+    const shouldExtend = this.props.global.extended.includes(
+      this.props.fullPath
+    );
+
+    const marginLeft = this.props.indent * 30 + "px";
+
+    return (
+      <div>
+        <div style={{ marginLeft }}>
+          <div
+            onClick={() => this.props.callClick(this)}
+            className={shouldExtend ? "arrow" : "arrow arrow-collapsed"}
+          />
+
+          <div style={{ display: "inline-block" }}>
+            <span className={"property-name"}> {this.props.name}  </span>
+            <span className={"property-type"}> {type}  </span>
+            <span className={"property-info"}>
+              {otherInfo}
+            </span>
+
+          </div>
         </div>
-      );
+
+        {shouldExtend
+          ? keys.map(key =>
+              <PropertyViewer
+                global={this.props.global}
+                fullPath={this.props.fullPath + "." + key}
+                key={key}
+                name={key}
+                value={value[key]}
+                callClick={this.props.callClick}
+                indent={this.props.indent + 1}
+              />
+            )
+          : ""}
+      </div>
+    );
   }
 }
+
+PropertyViewer.propTypes = {};
+
+export default PropertyViewer;

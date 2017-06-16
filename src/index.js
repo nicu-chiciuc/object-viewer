@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import PropertyViewer from "./PropertyViewer";
+import App from "./App";
 
-var sampleObject = {
+var rootObject = {
   degrees: 67,
   name: "Some name",
   something: {
@@ -12,9 +12,9 @@ var sampleObject = {
   }
 };
 
-sampleObject.something.oooo = sampleObject;
+rootObject.something.repeat = rootObject;
 
 ReactDOM.render(
-  <PropertyViewer name={"sampleObject"} value={sampleObject} indent={0} />,
+  <App rootObject={rootObject} extended={["rootObject"]} />,
   document.querySelector(".container")
 );
