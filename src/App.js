@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import PropertyViewer from "./PropertyViewer";
+import { isObject } from "./utils";
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -14,9 +16,8 @@ export default class App extends Component {
     window.setRootObject = this.setRootObject.bind(this);
   }
 
-  handleClicks = comp => {
-    const fullPath = comp.props.fullPath;
-
+  handleClicks = ({ props: { fullPath } }) => {
+    // remove or add a new value if it is present or not
     const ind = this.state.extended.indexOf(fullPath);
     if (ind === -1) {
       this.state.extended.push(fullPath);
@@ -46,7 +47,7 @@ export default class App extends Component {
       const newFullPath = fullPath.length ? fullPath + "." + name : name;
       newExtended.push(newFullPath);
 
-      if (typeof value === "object") {
+      if (isObject(value)) {
         Object.keys(value).forEach(key => {
           recursiveReset(newFullPath, levelNow + 1, key, value[key]);
         });
@@ -84,7 +85,7 @@ export default class App extends Component {
         </div>
 
         <PropertyViewer
-          global={this.state}
+          extended={this.state.extended}
           fullPath={"rootObject"}
           name={"rootObject"}
           value={this.state.rootObject}
@@ -95,3 +96,10 @@ export default class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  rootObject: PropTypes.any.isRequired,
+  extended: PropTypes.array.isRequired
+};
+
+export default App;

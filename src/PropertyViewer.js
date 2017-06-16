@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { isObject } from "./utils";
 
 class PropertyViewer extends Component {
   handleClick = () => {};
 
   getOtherInfo() {
     const value = this.props.value;
-    if (typeof value === "object")
-      return Object.keys(value).length + " children";
+    if (isObject(value)) return Object.keys(value).length + " children";
     else if (typeof value === "boolean") return value ? "true" : "false";
     else return value;
   }
 
   getChildren() {
     const value = this.props.value;
-    if (typeof value === "object") return Object.keys(value);
+    if (isObject(value)) return Object.keys(value);
     else return [];
   }
 
@@ -25,9 +25,7 @@ class PropertyViewer extends Component {
   render() {
     const value = this.props.value;
 
-    const shouldExtend = this.props.global.extended.includes(
-      this.props.fullPath
-    );
+    const shouldExtend = this.props.extended.includes(this.props.fullPath);
 
     const children = this.getChildren();
 
@@ -48,7 +46,7 @@ class PropertyViewer extends Component {
           <div style={{ display: "inline-block" }}>
             <span className={"property-name"}> {this.props.name}  </span>
             <span className={"property-type"}>
-              {" "}{typeof value}
+              {" "}{value === null ? "null" : typeof value}
             </span>
             <span className={"property-info"}>
               {" "}{this.getOtherInfo()}
@@ -60,7 +58,7 @@ class PropertyViewer extends Component {
         {shouldExtend
           ? this.getChildren().map(key =>
               <PropertyViewer
-                global={this.props.global}
+                extended={this.props.extended}
                 fullPath={this.props.fullPath + "." + key}
                 key={key}
                 name={key}
@@ -75,6 +73,13 @@ class PropertyViewer extends Component {
   }
 }
 
-PropertyViewer.propTypes = {};
+PropertyViewer.propTypes = {
+  value: PropTypes.any,
+  fullPath: PropTypes.string.isRequired,
+  callClick: PropTypes.func.isRequired,
+  indent: PropTypes.number.isRequired,
+  extended: PropTypes.arrayOf(PropTypes.string),
+  name: PropTypes.string
+};
 
 export default PropertyViewer;

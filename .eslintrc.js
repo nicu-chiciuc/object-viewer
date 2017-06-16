@@ -17,7 +17,6 @@ module.exports = {
   plugins: ["react"],
   rules: {
     "linebreak-style": ["error", "unix"],
-    "react/prop-types": [0],
     "no-unused-vars": [1],
     eqeqeq: ["error", "always"],
     "no-console": ["warn", { allow: ["info", "error", "log"] }]
