@@ -16,7 +16,6 @@ export default class App extends Component {
 
   handleClicks = comp => {
     const fullPath = comp.props.fullPath;
-    console.log("clicked", fullPath);
 
     const ind = this.state.extended.indexOf(fullPath);
     if (ind === -1) {
